@@ -1,4 +1,7 @@
-﻿using Abp.EntityFrameworkCore.Configuration;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Abp.Dapper;
+using Abp.EntityFrameworkCore.Configuration;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Zero.EntityFrameworkCore;
@@ -8,7 +11,8 @@ namespace MetroStation.EntityFrameworkCore
 {
     [DependsOn(
         typeof(MetroStationCoreModule), 
-        typeof(AbpZeroCoreEntityFrameworkCoreModule))]
+        typeof(AbpZeroCoreEntityFrameworkCoreModule),
+        typeof(AbpDapperModule))]
     public class MetroStationEntityFrameworkModule : AbpModule
     {
         /* Used it tests to skip dbcontext registration, in order to use in-memory database of EF Core */
@@ -37,6 +41,8 @@ namespace MetroStation.EntityFrameworkCore
         public override void Initialize()
         {
             IocManager.RegisterAssemblyByConvention(typeof(MetroStationEntityFrameworkModule).GetAssembly());
+            //这里会自动去扫描程序集中配置好的映射关系
+            DapperExtensions.DapperExtensions.SetMappingAssemblies(new List<Assembly> { typeof(MetroStationEntityFrameworkModule).GetAssembly() });
         }
 
         public override void PostInitialize()
