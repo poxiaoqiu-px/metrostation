@@ -6,6 +6,12 @@ namespace MetroStation.Authorization.Users
 {
     public class User : AbpUser<User>
     {
+        /// <summary>
+        /// 线路
+        /// </summary>
+        /// <value>The line identifier.</value>
+        public int LineId { get; set; }
+
         public const string DefaultPassword = "123qwe";
 
         public static string CreateRandomPassword()

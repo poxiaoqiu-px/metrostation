@@ -3,6 +3,7 @@ using Abp.Reflection.Extensions;
 using Abp.Timing;
 using Abp.Zero;
 using Abp.Zero.Configuration;
+using MetroStation.Authorization;
 using MetroStation.Authorization.Roles;
 using MetroStation.Authorization.Users;
 using MetroStation.Configuration;
@@ -33,6 +34,9 @@ namespace MetroStation
             AppRoleConfig.Configure(Configuration.Modules.Zero().RoleManagement);
 
             Configuration.Settings.Providers.Add<AppSettingProvider>();
+
+            //authorizationprovider会自动注册到依赖注入系统中
+            //Configuration.Authorization.Providers.Add<MetroStationAuthorizationProvider>();
         }
 
         public override void Initialize()

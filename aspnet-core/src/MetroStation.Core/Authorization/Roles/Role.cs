@@ -24,5 +24,11 @@ namespace MetroStation.Authorization.Roles
 
         [StringLength(MaxDescriptionLength)]
         public string Description {get; set;}
+
+        /// <summary>
+        /// 线路
+        /// </summary>
+        /// <value>The line identifier.</value>
+        public int LineId { get; set; }
     }
 }
