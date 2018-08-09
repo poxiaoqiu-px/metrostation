@@ -35,6 +35,18 @@ namespace MetroStation.EntityFrameworkCore
                         MetroStationDbContextConfigurer.Configure(options.DbContextOptions, options.ConnectionString);
                     }
                 });
+
+                Configuration.Modules.AbpEfCore().AddDbContext<AuditLogDbContext>(options =>
+                {
+                    if (options.ExistingConnection != null)
+                    {
+                        AuditLogDbContextConfigurer.Configure(options.DbContextOptions, options.ExistingConnection);
+                    }
+                    else
+                    {
+                        AuditLogDbContextConfigurer.Configure(options.DbContextOptions, options.ConnectionString);
+                    }
+                });
             }
         }
 

@@ -5,9 +5,9 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace MetroStation.EntityFrameworkCore
 {
-    public static class MetroStationDbContextConfigurer
+    public static class AuditLogDbContextConfigurer
     {
-        public static void Configure(DbContextOptionsBuilder<MetroStationDbContext> builder, string connectionString)
+        public static void Configure(DbContextOptionsBuilder<AuditLogDbContext> builder, string connectionString)
         {
             //builder.UseMySql(connectionString);
             builder.UseMySql(connectionString, x =>
@@ -16,7 +16,7 @@ namespace MetroStation.EntityFrameworkCore
             });
         }
 
-        public static void Configure(DbContextOptionsBuilder<MetroStationDbContext> builder, DbConnection connection)
+        public static void Configure(DbContextOptionsBuilder<AuditLogDbContext> builder, DbConnection connection)
         {
             //builder.UseMySql(connection);
             builder.UseMySql(connection, x =>

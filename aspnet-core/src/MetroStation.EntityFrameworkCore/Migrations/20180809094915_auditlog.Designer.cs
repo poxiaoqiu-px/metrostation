@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MetroStation.Migrations
 {
-    [DbContext(typeof(MetroStationDbContext))]
-    [Migration("20180807111356_add entities")]
-    partial class addentities
+    [DbContext(typeof(AuditLogDbContext))]
+    [Migration("20180809094915_auditlog")]
+    partial class auditlog
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,6 +97,9 @@ namespace MetroStation.Migrations
                     b.Property<string>("CustomData")
                         .HasMaxLength(2000);
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Exception")
                         .HasMaxLength(2000);
 
@@ -130,6 +133,8 @@ namespace MetroStation.Migrations
                     b.HasIndex("TenantId", "UserId");
 
                     b.ToTable("AbpAuditLogs");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("AuditLog");
                 });
 
             modelBuilder.Entity("Abp.Authorization.PermissionSetting", b =>
@@ -862,6 +867,8 @@ namespace MetroStation.Migrations
 
                     b.Property<long?>("LastModifierUserId");
 
+                    b.Property<int>("LineId");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(32);
@@ -932,6 +939,8 @@ namespace MetroStation.Migrations
 
                     b.Property<long?>("LastModifierUserId");
 
+                    b.Property<int>("LineId");
+
                     b.Property<DateTime?>("LockoutEndDateUtc");
 
                     b.Property<string>("Name")
@@ -998,582 +1007,6 @@ namespace MetroStation.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Apartment");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.Bed", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("BedNum");
-
-                    b.Property<int>("RoomId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Bed");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.BedUserMapping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ApartmentId");
-
-                    b.Property<DateTime>("AttendTime");
-
-                    b.Property<int>("BedId");
-
-                    b.Property<DateTime>("CallTime");
-
-                    b.Property<int>("LineId");
-
-                    b.Property<DateTime>("RecDate");
-
-                    b.Property<int>("RoomId");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BedUserMapping");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.CrossingRoad", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AttenStation");
-
-                    b.Property<DateTime>("AttenTime");
-
-                    b.Property<string>("AttenTrain");
-
-                    b.Property<string>("CrossingRoadName");
-
-                    b.Property<decimal>("Hours");
-
-                    b.Property<decimal>("Miles");
-
-                    b.Property<string>("OffStation");
-
-                    b.Property<DateTime>("OffTime");
-
-                    b.Property<string>("OffTrain");
-
-                    b.Property<string>("RunTrain");
-
-                    b.Property<int>("TableInfoId");
-
-                    b.Property<DateTime>("TrainTime");
-
-                    b.Property<int>("TurnRuleDetailId");
-
-                    b.Property<int>("UserGroupId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CrossingRoad");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.Exam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Answer");
-
-                    b.Property<int>("ExamLevel");
-
-                    b.Property<string>("ExamText");
-
-                    b.Property<int>("ExamTypeId");
-
-                    b.Property<int>("LineId");
-
-                    b.Property<string>("OptionA");
-
-                    b.Property<string>("OptionB");
-
-                    b.Property<string>("OptionC");
-
-                    b.Property<string>("OptionD");
-
-                    b.Property<string>("OptionE");
-
-                    b.Property<string>("OptionF");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Exam");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.ExamRecord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ErrorCount");
-
-                    b.Property<int>("ExamCount");
-
-                    b.Property<DateTime>("ExamDate");
-
-                    b.Property<int>("ExamTypeId");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ExamRecord");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.ExamRecordDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Answer");
-
-                    b.Property<int>("ExamId");
-
-                    b.Property<int>("ExamRecordId");
-
-                    b.Property<bool>("IsCorrect");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ExamRecordDetail");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.ExamType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ExamTypeName");
-
-                    b.Property<int>("LineId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ExamType");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.Line", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("LineName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Line");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.LogicLine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LineId");
-
-                    b.Property<string>("LogicLineName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LogicLine");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.RoleExamTypeMapping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ExamCount");
-
-                    b.Property<int>("ExamTypeId");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RoleExamTypeMapping");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.Room", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("ApartmentId");
-
-                    b.Property<string>("RoomName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Room");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.Station", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("StationAbbr");
-
-                    b.Property<string>("StationName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Station");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.StationCode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LineId");
-
-                    b.Property<string>("StationCodeName");
-
-                    b.Property<int>("StationId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StationCode");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.StationLineMapping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LogicLineId");
-
-                    b.Property<decimal>("MileOffset");
-
-                    b.Property<int>("Sequence");
-
-                    b.Property<int>("StationId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StationLineMapping");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.TableInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("InsertTime");
-
-                    b.Property<int>("LineId");
-
-                    b.Property<string>("TableName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TableInfo");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.TableInfoToDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LineId");
-
-                    b.Property<DateTime>("RecDate");
-
-                    b.Property<int>("TableInfoId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TableInfoToDate");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.TrainDetailInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("End");
-
-                    b.Property<int>("Interval");
-
-                    b.Property<int>("Start");
-
-                    b.Property<int>("TableInfoId");
-
-                    b.Property<string>("TrainId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TrainDetailInfo");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.TrainSchedule", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Arc_Ne");
-
-                    b.Property<int>("Arrive");
-
-                    b.Property<int>("Depart");
-
-                    b.Property<int>("Direction");
-
-                    b.Property<int>("EndStationId");
-
-                    b.Property<string>("LastId");
-
-                    b.Property<int>("LineId");
-
-                    b.Property<string>("MidId");
-
-                    b.Property<int>("RTTime");
-
-                    b.Property<int>("Sequence");
-
-                    b.Property<int>("StartStationId");
-
-                    b.Property<int>("StationId");
-
-                    b.Property<int>("Stop");
-
-                    b.Property<int>("TableInfoId");
-
-                    b.Property<string>("TrainId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TrainSchedule");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.TurnRule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IncludeWeekend");
-
-                    b.Property<int>("LineId");
-
-                    b.Property<string>("TurnRuleName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TurnRule");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.TurnRuleDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("OnDuty");
-
-                    b.Property<int>("Sequence");
-
-                    b.Property<string>("TurnRuleDetailName");
-
-                    b.Property<int>("TurnRuleId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TurnRuleDetail");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LineId");
-
-                    b.Property<string>("UserGroupName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserGroup");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserLineMapping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LineId");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserLineMapping");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserOnDutyRecord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("AttenStation");
-
-                    b.Property<DateTime>("AttenTime");
-
-                    b.Property<string>("AttenTrain");
-
-                    b.Property<string>("CrossingRoadName");
-
-                    b.Property<decimal>("Hours");
-
-                    b.Property<decimal>("Miles");
-
-                    b.Property<string>("OffStation");
-
-                    b.Property<DateTime>("OffTime");
-
-                    b.Property<string>("OffTrain");
-
-                    b.Property<string>("RunTrain");
-
-                    b.Property<int>("TableInfoId");
-
-                    b.Property<DateTime>("TrainTime");
-
-                    b.Property<int>("TurnRuleDetailId");
-
-                    b.Property<int>("UserGroupId");
-
-                    b.Property<int>("UserTeamRecordId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserOnDutyRecord");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserOnDutyRecordDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("PlanUserId");
-
-                    b.Property<DateTime>("RecDate");
-
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("UserOnDutyRecordId");
-
-                    b.Property<int>("UserTypeId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserOnDutyRecordDetail");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserOnDutyUnit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Sequence");
-
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("UserTeamId");
-
-                    b.Property<int>("UserTypeId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserOnDutyUnit");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserTeam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("UserGroupId");
-
-                    b.Property<string>("UserTeamName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserTeam");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserTeamPlan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LineId");
-
-                    b.Property<DateTime>("RecDate");
-
-                    b.Property<int>("TurnRuleDetailId");
-
-                    b.Property<int>("UserTeamId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserTeamPlan");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserTeamRecord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("LineId");
-
-                    b.Property<DateTime>("RecDate");
-
-                    b.Property<int>("Sequence");
-
-                    b.Property<int>("UserTeamId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserTeamRecord");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserTeamRecordDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("UserTeamRecordId");
-
-                    b.Property<int>("UserTypeId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserTeamRecordDetail");
-                });
-
-            modelBuilder.Entity("MetroStation.Entities.UserType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("UserTypeName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserType");
                 });
 
             modelBuilder.Entity("MetroStation.MultiTenancy.Tenant", b =>
@@ -1648,6 +1081,16 @@ namespace MetroStation.Migrations
                     b.ToTable("AbpFeatures");
 
                     b.HasDiscriminator().HasValue("TenantFeatureSetting");
+                });
+
+            modelBuilder.Entity("MetroStation.Entities.AuditLogs", b =>
+                {
+                    b.HasBaseType("Abp.Auditing.AuditLog");
+
+
+                    b.ToTable("Auditlog");
+
+                    b.HasDiscriminator().HasValue("AuditLogs");
                 });
 
             modelBuilder.Entity("Abp.Authorization.Roles.RolePermissionSetting", b =>
