@@ -1,0 +1,5 @@
+dotnet ef margins add "" --context auditlogdbcontext
+dotnet ef database update --context auditlogdbcontext
+
+dotnet ef margins add "" --context metrostationdbcontext
+dotnet ef database update --context metrostationdbcontext

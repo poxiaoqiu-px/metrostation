@@ -8,7 +8,7 @@ using MetroStation.Mapping;
 
 namespace MetroStation.EntityFrameworkCore
 {
-    public class AuditLogDbContext : AbpZeroDbContext<Tenant, Role, User, AuditLogDbContext>
+    public class AuditLogDbContext : DbContext
     {
         /* Define a DbSet for each entity of the application */
         public DbSet<AuditLogs> AuditLog { get; set; }
@@ -20,7 +20,6 @@ namespace MetroStation.EntityFrameworkCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.AddEntityConfigurationsFromAssembly(GetType().Assembly);
         }
     }
 }

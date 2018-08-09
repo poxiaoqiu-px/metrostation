@@ -1,4 +1,6 @@
-﻿using Abp.Modules;
+﻿using Abp.Auditing;
+using Abp.Dependency;
+using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Timing;
 using Abp.Zero;
@@ -10,6 +12,7 @@ using MetroStation.Configuration;
 using MetroStation.Localization;
 using MetroStation.MultiTenancy;
 using MetroStation.Timing;
+using MetroStation.Audit;
 
 namespace MetroStation
 {
@@ -18,7 +21,7 @@ namespace MetroStation
     {
         public override void PreInitialize()
         {
-            Configuration.Auditing.IsEnabledForAnonymousUsers = true;
+            Configuration.Auditing.IsEnabledForAnonymousUsers = false;
 
             // Declare entity types
             Configuration.Modules.Zero().EntityTypes.Tenant = typeof(Tenant);
@@ -37,6 +40,8 @@ namespace MetroStation
 
             //authorizationprovider会自动注册到依赖注入系统中
             //Configuration.Authorization.Providers.Add<MetroStationAuthorizationProvider>();
+
+            IocManager.Register<IAuditingStore, AuditingLogStore>(DependencyLifeStyle.Transient);
         }
 
         public override void Initialize()
